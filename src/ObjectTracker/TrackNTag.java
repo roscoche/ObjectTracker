@@ -53,6 +53,7 @@ public class TrackNTag {
 
     
     ArrayList<Tag> allTags;
+    private int totalArea;
     boolean usadas[] = null;
 
     public TrackNTag() {
@@ -63,16 +64,16 @@ public class TrackNTag {
     public int getBestTag(CvPoint centroid, int area) {
         CvPoint auxpoint;
         Tag auxtag;
-        double distance, bestDistance = 999;
+        double cost, bestCost = 999;
         int best = -1;
         for (int i = 0; i < allTags.size(); i++) {
             if (!usadas[i]) {
                 auxtag = allTags.get(i);
                 auxpoint = auxtag.getCentroide();
-                distance = sqrt(pow((centroid.x() - auxpoint.x()), 2) + pow((centroid.y() - auxpoint.y()), 2));
-                System.out.println("distance"+distance);
-                if (distance < bestDistance) {
-                    bestDistance = distance;
+                cost = sqrt(pow((centroid.x() - auxpoint.x()), 2) + pow((centroid.y() - auxpoint.y()), 2)+pow((area-auxtag.getArea())/totalArea,2));
+                System.out.println("cost "+cost);
+                if (cost < bestCost) {
+                    bestCost = cost;
                     best = i;
                 }
             }
@@ -88,6 +89,7 @@ public class TrackNTag {
         cvThreshold(diffimg, inverted, 70, 255, CV_THRESH_BINARY_INV);
         CvSeq cvSeq = new CvSeq();
         CvMemStorage memory = CvMemStorage.create();
+        totalArea=original.width()*original.height();
         int newnTags = cvFindContours(inverted, memory, cvSeq, Loader.sizeof(CvContour.class), CV_RETR_LIST, CV_CHAIN_APPROX_SIMPLE);
         if (newnTags > allTags.size()) usadas = new boolean[newnTags];
         else if (newnTags < allTags.size()) usadas = new boolean[allTags.size()];

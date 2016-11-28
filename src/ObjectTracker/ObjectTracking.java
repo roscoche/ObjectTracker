@@ -76,8 +76,8 @@ public class ObjectTracking {
                         cvCvtColor(img, aux, CV_RGB2GRAY);
                         cvThreshold(aux, thresholdimg, 127, 255, CV_THRESH_OTSU);
                         cvAbsDiff(background, thresholdimg, diffimg);
-                        cvErode(diffimg, diffimg, null, 7);
-                        cvDilate(diffimg, diffimg, null, 9);
+                        cvErode(diffimg, diffimg, null, 6);
+                        cvDilate(diffimg, diffimg, null, 7);
                         contorno = objt.trackBox(diffimg, img);
                     } else {
                         break;
