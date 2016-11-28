@@ -20,7 +20,7 @@
  * @website roscoche.com
  */
 
-package objecttracking;
+package ObjectTracker;
 
 import com.googlecode.javacv.cpp.opencv_core.CvPoint;
 
